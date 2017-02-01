@@ -12,13 +12,25 @@ class Zf2 implements BootstrapInterface
     protected $appenv;
 
     /**
+     * @var bool
+     */
+    protected $debug;
+
+    /**
      * Instantiate the bootstrap, storing the $appenv.
      *
      * @param string $appenv
+     * @param bool $debug
      */
-    public function __construct($appenv)
+    public function __construct($appenv, $debug)
     {
         $this->appenv = $appenv;
+        $this->debug = $debug;
+    }
+
+    public function getStaticDirectory()
+    {
+        return 'public/';
     }
 
     /**

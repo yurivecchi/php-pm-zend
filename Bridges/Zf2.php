@@ -2,6 +2,7 @@
 
 namespace PHPPM\Bridges;
 
+use PHPPM\React\HttpResponse;
 use React\Http\Request as ReactRequest;
 use React\Http\Response as ReactResponse;
 use Zend\Http\PhpEnvironment\Request as ZendRequest;
@@ -23,11 +24,16 @@ class Zf2 implements BridgeInterface
      * @param string $appBootstrap
      * @param string $appenv
      */
-    public function bootstrap($appBootstrap, $appenv)
+    public function bootstrap($appBootstrap, $appenv, $debug)
     {
         /* @var $bootstrap \PHPPM\Bootstraps\Zf2 */
-        $bootstrap = new \PHPPM\Bootstraps\Zf2($appenv);
+        $bootstrap = new \PHPPM\Bootstraps\Zf2($appenv, $debug);
         $this->application = $bootstrap->getApplication();
+    }
+
+    public function getStaticDirectory()
+    {
+        return 'public/';
     }
 
     /**
@@ -36,7 +42,7 @@ class Zf2 implements BridgeInterface
      * @param ReactRequest $request
      * @param ReactResponse $response
      */
-    public function onRequest(ReactRequest $request, ReactResponse $response)
+    public function onRequest(ReactRequest $request, HttpResponse $response)
     {
         if (null === ($app = $this->application)) {
             return;
